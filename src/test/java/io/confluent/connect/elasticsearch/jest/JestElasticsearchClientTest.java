@@ -184,7 +184,7 @@ public class JestElasticsearchClientTest {
     IndexableRecord record = new IndexableRecord(new Key(INDEX, TYPE, KEY), "payload", 0L);
     List<IndexableRecord> records = new ArrayList<>();
     records.add(record);
-    BulkRequest request = client.createBulkRequest(records);
+    BulkRequest request = client.createBulkRequest(records, null);
     BulkResult success = new BulkResult(new Gson());
     success.setSucceeded(true);
     when(jestClient.execute(((JestBulkRequest) request).getBulk())).thenReturn(success);
@@ -198,7 +198,7 @@ public class JestElasticsearchClientTest {
     IndexableRecord record = new IndexableRecord(new Key(INDEX, TYPE, KEY), null, 0L);
     List<IndexableRecord> records = new ArrayList<>();
     records.add(record);
-    BulkRequest request = client.createBulkRequest(records);
+    BulkRequest request = client.createBulkRequest(records, null);
     BulkResult failure = new BulkResult(new Gson());
     failure.setSucceeded(false);
     when(jestClient.execute(((JestBulkRequest) request).getBulk())).thenReturn(failure);
@@ -212,7 +212,7 @@ public class JestElasticsearchClientTest {
     IndexableRecord record = new IndexableRecord(new Key(INDEX, TYPE, KEY), "payload", 0L);
     List<IndexableRecord> records = new ArrayList<>();
     records.add(record);
-    BulkRequest request = client.createBulkRequest(records);
+    BulkRequest request = client.createBulkRequest(records, null);
     BulkResult failure = createBulkResultFailure(JestElasticsearchClient.MAPPER_PARSE_EXCEPTION);
     when(jestClient.execute(((JestBulkRequest) request).getBulk())).thenReturn(failure);
 
@@ -225,7 +225,7 @@ public class JestElasticsearchClientTest {
     IndexableRecord record = new IndexableRecord(new Key(INDEX, TYPE, KEY), "payload", 0L);
     List<IndexableRecord> records = new ArrayList<>();
     records.add(record);
-    BulkRequest request = client.createBulkRequest(records);
+    BulkRequest request = client.createBulkRequest(records, null);
     BulkResult failure = createBulkResultFailure("some_random_exception");
     when(jestClient.execute(((JestBulkRequest) request).getBulk())).thenReturn(failure);
 
@@ -238,7 +238,7 @@ public class JestElasticsearchClientTest {
     IndexableRecord record = new IndexableRecord(new Key(INDEX, TYPE, KEY), "payload", 0L);
     List<IndexableRecord> records = new ArrayList<>();
     records.add(record);
-    BulkRequest request = client.createBulkRequest(records);
+    BulkRequest request = client.createBulkRequest(records, null);
     BulkResult failure = createBulkResultFailure(JestElasticsearchClient.VERSION_CONFLICT_ENGINE_EXCEPTION);
     when(jestClient.execute(((JestBulkRequest) request).getBulk())).thenReturn(failure);
 

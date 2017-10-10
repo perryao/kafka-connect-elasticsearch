@@ -125,7 +125,7 @@ public class ElasticsearchSinkTask extends SinkTask {
           .setIgnoreSchema(ignoreSchema, topicIgnoreSchema)
           .setCompactMapEntries(useCompactMapEntries)
           .setTopicToIndexMap(topicToIndexMap)
-          .setFlushTimoutMs(flushTimeoutMs)
+          .setFlushTimeoutMs(flushTimeoutMs)
           .setMaxBufferedRecords(maxBufferedRecords)
           .setMaxInFlightRequests(maxInFlightRequests)
           .setBatchSize(batchSize)
@@ -135,6 +135,11 @@ public class ElasticsearchSinkTask extends SinkTask {
           .setDropInvalidMessage(dropInvalidMessage)
           .setBehaviorOnNullValues(behaviorOnNullValues)
           .setBehaviorOnMalformedDoc(behaviorOnMalformedDoc);
+
+      final String pipeline = config.getString(ElasticsearchSinkConnectorConfig.PIPELINE_CONFIG);
+      if (pipeline != null && !pipeline.isEmpty()) {
+        builder.setParameter(ElasticsearchSinkConnectorConfig.PIPELINE_CONFIG, pipeline);
+      }
 
       writer = builder.build();
       writer.start();

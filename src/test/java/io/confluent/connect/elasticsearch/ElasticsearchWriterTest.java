@@ -510,7 +510,7 @@ public class ElasticsearchWriterTest extends ElasticsearchSinkTestBase {
         .setIgnoreKey(ignoreKey, ignoreKeyTopics)
         .setIgnoreSchema(ignoreSchema, ignoreSchemaTopics)
         .setTopicToIndexMap(topicToIndexMap)
-        .setFlushTimoutMs(10000)
+        .setFlushTimeoutMs(10000)
         .setMaxBufferedRecords(10000)
         .setMaxInFlightRequests(1)
         .setBatchSize(2)

@@ -73,7 +73,8 @@ public class ElasticsearchWriter {
       long retryBackoffMs,
       boolean dropInvalidMessage,
       BehaviorOnNullValues behaviorOnNullValues,
-      BehaviorOnMalformedDoc behaviorOnMalformedDoc
+      BehaviorOnMalformedDoc behaviorOnMalformedDoc,
+      Map<String, Object> bulkParameters
   ) {
     this.client = client;
     this.type = type;
@@ -90,7 +91,7 @@ public class ElasticsearchWriter {
 
     bulkProcessor = new BulkProcessor<>(
         new SystemTime(),
-        new BulkIndexingClient(client),
+        new BulkIndexingClient(client, bulkParameters),
         maxBufferedRecords,
         maxInFlightRequests,
         batchSize,
@@ -122,6 +123,7 @@ public class ElasticsearchWriter {
     private boolean dropInvalidMessage;
     private BehaviorOnNullValues behaviorOnNullValues = BehaviorOnNullValues.DEFAULT;
     private BehaviorOnMalformedDoc behaviorOnMalformedDoc;
+    private Map<String, Object> parameters = new HashMap<>();
 
     public Builder(ElasticsearchClient client) {
       this.client = client;
@@ -154,7 +156,7 @@ public class ElasticsearchWriter {
       return this;
     }
 
-    public Builder setFlushTimoutMs(long flushTimeoutMs) {
+    public Builder setFlushTimeoutMs(long flushTimeoutMs) {
       this.flushTimeoutMs = flushTimeoutMs;
       return this;
     }
@@ -211,6 +213,11 @@ public class ElasticsearchWriter {
       return this;
     }
 
+    public Builder setParameter(String key, Object value) {
+      this.parameters.put(key, value);
+      return this;
+    }
+
     public ElasticsearchWriter build() {
       return new ElasticsearchWriter(
           client,
@@ -230,7 +237,8 @@ public class ElasticsearchWriter {
           retryBackoffMs,
           dropInvalidMessage,
           behaviorOnNullValues,
-          behaviorOnMalformedDoc
+          behaviorOnMalformedDoc,
+          parameters
       );
     }
   }

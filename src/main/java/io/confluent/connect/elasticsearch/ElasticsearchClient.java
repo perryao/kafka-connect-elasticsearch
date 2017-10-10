@@ -23,6 +23,7 @@ import org.apache.kafka.connect.data.Schema;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public interface ElasticsearchClient extends AutoCloseable {
@@ -70,7 +71,7 @@ public interface ElasticsearchClient extends AutoCloseable {
    * @param batch the list of records
    * @return the bulk request
    */
-  BulkRequest createBulkRequest(List<IndexableRecord> batch);
+  BulkRequest createBulkRequest(List<IndexableRecord> batch, Map<String, Object> parameters);
 
   /**
    * Executes a bulk action.

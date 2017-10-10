@@ -16,6 +16,11 @@
 
 package io.confluent.connect.elasticsearch;
 
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
 import io.confluent.connect.elasticsearch.bulk.BulkClient;
 import io.confluent.connect.elasticsearch.bulk.BulkRequest;
 import io.confluent.connect.elasticsearch.bulk.BulkResponse;
@@ -26,14 +31,16 @@ import java.util.List;
 public class BulkIndexingClient implements BulkClient<IndexableRecord, BulkRequest> {
 
   private final ElasticsearchClient client;
+  private final Map<String, Object> parameters;
 
-  public BulkIndexingClient(ElasticsearchClient client) {
+  public BulkIndexingClient(ElasticsearchClient client, Map<String, Object> parameters) {
     this.client = client;
+    this.parameters = parameters;
   }
 
   @Override
   public BulkRequest bulkRequest(List<IndexableRecord> batch) {
-    return client.createBulkRequest(batch);
+    return client.createBulkRequest(batch, parameters);
   }
 
   @Override
